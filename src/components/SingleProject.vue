@@ -1,7 +1,12 @@
 <template>
-  <div class="project">
+  <div class="project" :class="{ complete: project.complete }">
     <div class="actions">
       <h3 @click="toggleDetails">{{ project.title }}</h3>
+      <div>
+        <button class="btn">Edit</button>
+        <button @click="deleteProject" class="btn">Delete</button>
+        <button @click="toggleComplete" class="btn">Done</button>
+      </div>
     </div>
     <div class="details" v-show="showDetails">
       <p>{{ project.details }}</p>
@@ -10,8 +15,15 @@
 </template>
 
 <script>
+import getProject from "../composables/getProject";
+
 export default {
-  props: ["project"],
+  props: ["id"],
+  setup(props) {
+    const { project, error, load } = getProject(props.id);
+    load();
+    return { project, error };
+  },
   data() {
     return {
       showDetails: false,
@@ -20,6 +32,27 @@ export default {
   methods: {
     toggleDetails() {
       this.showDetails = !this.showDetails;
+    },
+    deleteProject() {
+      this.$emit("delete", this.project.id);
+      fetch(`http://localhost:3000/projects/${this.project.id}`, {
+        method: "DELETE",
+      });
+    },
+    toggleComplete() {
+      this.project.complete = !this.project.complete;
+
+      fetch(`http://localhost:3000/projects/${this.project.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({
+          ...this.project,
+          complete: this.project.complete,
+        }),
+      });
     },
   },
 };
@@ -36,5 +69,21 @@ export default {
 }
 h3 {
   cursor: pointer;
+}
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+.complete {
+  border-left: 4px solid #00ce89;
 }
 </style>

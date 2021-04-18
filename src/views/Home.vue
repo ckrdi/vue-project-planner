@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-if="projects.length">
     <div v-for="project in projects" :key="project.id">
-      <SingleProject :project="project" />
+      <SingleProject :id="project.id" @delete="deleteProject" />
     </div>
   </div>
 </template>
@@ -15,17 +15,13 @@ export default {
   components: {
     SingleProject,
   },
-  // data() {
-  //   return {
-  //     projects: [],
-  //   };
-  // },
-  // mounted() {
-  //   fetch("http://localhost:3000/projects")
-  //     .then((res) => res.json())
-  //     .then((data) => (this.projects = data))
-  //     .catch((err) => console.log(err));
-  // },
+  methods: {
+    deleteProject(id) {
+      this.projects = this.projects.filter((project) => {
+        return project.id !== id;
+      });
+    },
+  },
   setup() {
     const { projects, error, load } = getData();
     load();
