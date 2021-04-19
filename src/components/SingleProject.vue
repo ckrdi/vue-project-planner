@@ -8,15 +8,15 @@
         </router-link>
 
         <button @click="deleteProject" class="btn">Delete</button>
-        <button v-show="!project.complete" @click="toggleComplete" class="btn">
+        <button v-if="!project.complete" @click="toggleComplete" class="btn">
           Done
         </button>
-        <button v-show="project.complete" @click="toggleComplete" class="btn">
+        <button v-if="project.complete" @click="toggleComplete" class="btn">
           Not Done
         </button>
       </div>
     </div>
-    <div class="details" v-show="showDetails">
+    <div class="details" v-if="showDetails">
       <p>{{ project.details }}</p>
     </div>
   </div>
@@ -48,6 +48,7 @@ export default {
       });
     },
     toggleComplete() {
+      this.$emit("toggle", this.project.id);
       this.project.complete = !this.project.complete;
 
       fetch(`http://localhost:3000/projects/${this.project.id}`, {

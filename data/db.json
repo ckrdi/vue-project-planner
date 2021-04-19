@@ -1,21 +1,15 @@
 {
   "projects": [
     {
-      "id": 1,
-      "title": "Create a Vue project",
+      "id": 2,
+      "title": "Make Vue projects",
       "details": "Lorem ipsum",
       "complete": true
     },
     {
-      "id": 2,
-      "title": "Make Vue projects",
-      "details": "Lorem ipsum",
-      "complete": false
-    },
-    {
       "title": "Learn Nuxt.js",
       "details": "Lorem ipsum",
-      "complete": false,
+      "complete": true,
       "id": 3
     }
   ]

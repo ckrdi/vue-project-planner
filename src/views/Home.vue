@@ -2,7 +2,11 @@
   <div class="home" v-if="projects.length">
     <Filternav @filterChange="filterChange" :current="current" />
     <div v-for="project in filteredProjects" :key="project.id">
-      <SingleProject :id="project.id" @delete="deleteProject" />
+      <SingleProject
+        :id="project.id"
+        @delete="deleteProject"
+        @toggle="handleToggle"
+      />
     </div>
   </div>
 </template>
@@ -31,6 +35,12 @@ export default {
       this.projects = this.projects.filter((project) => {
         return project.id !== id;
       });
+    },
+    handleToggle(id) {
+      let p = this.projects.find((project) => {
+        return project.id === id;
+      });
+      p.complete = !p.complete;
     },
   },
   computed: {
