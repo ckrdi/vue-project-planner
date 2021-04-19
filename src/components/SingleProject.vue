@@ -3,9 +3,17 @@
     <div class="actions">
       <h3 @click="toggleDetails">{{ project.title }}</h3>
       <div>
-        <button class="btn">Edit</button>
+        <router-link :to="{ name: 'EditProject', params: { id: id } }">
+          <button class="btn">Edit</button>
+        </router-link>
+
         <button @click="deleteProject" class="btn">Delete</button>
-        <button @click="toggleComplete" class="btn">Done</button>
+        <button v-show="!project.complete" @click="toggleComplete" class="btn">
+          Done
+        </button>
+        <button v-show="project.complete" @click="toggleComplete" class="btn">
+          Not Done
+        </button>
       </div>
     </div>
     <div class="details" v-show="showDetails">
